@@ -22,7 +22,6 @@ bp_dir=$(
   cd "$(dirname "$0")/.."
   pwd
 ) # absolute path
-source_dir="${bp_dir}/target"
 
-echo Copying "${source_dir}/.profile.d/heroku-metrics-daemon.sh" to "${BUILD_DIR}/.profile.d"
-cp "${source_dir}/.profile.d/heroku-metrics-daemon.sh" "${BUILD_DIR}/.profile.d"
+echo Copying "${bp_dir}/.profile.d/heroku-metrics-daemon.sh" to "${BUILD_DIR}/.profile.d"
+cp "${bp_dir}/.profile.d/heroku-metrics-daemon.sh" "${BUILD_DIR}/.profile.d"
