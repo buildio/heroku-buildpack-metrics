@@ -14,4 +14,15 @@ BUILD_DIR=$1
 
 arrow "Setting up .profile.d to automatically run metrics agent..."
 mkdir -p "${BUILD_DIR}/.profile.d"
-cp .profile.d/heroku-metrics-daemon.sh "${BUILD_DIR}/.profile.d"
+
+# [CNB Shim does not execute](https://github.com/heroku/cnb-shim/blob/fc265cb03f9621a0b14d8f29169b365d46782531/bin/build#L30) this script from the buildpack root.
+# Instead, we're in /workspace and calling this script by full path. So the only reference we have to our local files is using our calling directory.
+# Following the SHIM's helper:
+bp_dir=$(
+  cd "$(dirname "$0")/.."
+  pwd
+) # absolute path
+source_dir="${bp_dir}/target"
+
+echo Copying "${source_dir}/.profile.d/heroku-metrics-daemon.sh" to "${BUILD_DIR}/.profile.d"
+cp "${source_dir}/.profile.d/heroku-metrics-daemon.sh" "${BUILD_DIR}/.profile.d"
